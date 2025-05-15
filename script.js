@@ -1,4 +1,14 @@
-const questions = [
+/* Fisher-Yates Sorting Algorithm */
+const shuffle = (array) => {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+};
+
+// Embaralha as perguntas
+const questions = shuffle([
   // HTML (10)
   {
     question: "O que significa HTML?",
@@ -11,58 +21,65 @@ const questions = [
     correct: 0,
   },
   // HTML (5)
-{
-  question: "Qual elemento é usado para agrupar elementos em bloco?",
-  answers: ["<div>", "<span>", "<section>", "<article>"],
-  correct: 0,
-},
-{
-  question: "Qual atributo define um texto que aparece ao passar o mouse sobre um elemento?",
-  answers: ["title", "tooltip", "alt", "hover"],
-  correct: 0,
-},
-{
-  question: "Qual elemento é usado para destacar texto importante?",
-  answers: ["<strong>", "<b>", "<em>", "<mark>"],
-  correct: 0,
-},
-{
-  question: "Qual tag insere uma quebra de linha?",
-  answers: ["<br>", "<hr>", "<break>", "<nl>"],
-  correct: 0,
-},
-{
-  question: "Qual tag representa conteúdo autônomo como postagens ou artigos?",
-  answers: ["<article>", "<section>", "<aside>", "<main>"],
-  correct: 0,
-},
+  {
+    question: "Qual elemento é usado para agrupar elementos em bloco?",
+    answers: ["<div>", "<span>", "<section>", "<article>"],
+    correct: 0,
+  },
+  {
+    question:
+      "Qual atributo define um texto que aparece ao passar o mouse sobre um elemento?",
+    answers: ["title", "tooltip", "alt", "hover"],
+    correct: 0,
+  },
+  {
+    question: "Qual elemento é usado para destacar texto importante?",
+    answers: ["<strong>", "<b>", "<em>", "<mark>"],
+    correct: 0,
+  },
+  {
+    question: "Qual tag insere uma quebra de linha?",
+    answers: ["<br>", "<hr>", "<break>", "<nl>"],
+    correct: 0,
+  },
+  {
+    question:
+      "Qual tag representa conteúdo autônomo como postagens ou artigos?",
+    answers: ["<article>", "<section>", "<aside>", "<main>"],
+    correct: 0,
+  },
 
-// CSS (5)
-{
-  question: "Qual propriedade define o espaço externo de um elemento?",
-  answers: ["margin", "padding", "border", "spacing"],
-  correct: 0,
-},
-{
-  question: "Como aplicar uma sombra em texto?",
-  answers: ["text-shadow", "font-shadow", "shadow-text", "text-outline"],
-  correct: 0,
-},
-{
-  question: "Qual valor da propriedade position fixa um elemento na tela?",
-  answers: ["fixed", "absolute", "sticky", "relative"],
-  correct: 0,
-},
-{
-  question: "Como aplicar um estilo a vários seletores ao mesmo tempo?",
-  answers: ["Separando por vírgula", "Usando &", "Usando |", "Repetindo a regra"],
-  correct: 0,
-},
-{
-  question: "Qual pseudo-classe representa o estado de foco em um campo?",
-  answers: [":focus", ":hover", ":active", ":checked"],
-  correct: 0,
-},
+  // CSS (5)
+  {
+    question: "Qual propriedade define o espaço externo de um elemento?",
+    answers: ["margin", "padding", "border", "spacing"],
+    correct: 0,
+  },
+  {
+    question: "Como aplicar uma sombra em texto?",
+    answers: ["text-shadow", "font-shadow", "shadow-text", "text-outline"],
+    correct: 0,
+  },
+  {
+    question: "Qual valor da propriedade position fixa um elemento na tela?",
+    answers: ["fixed", "absolute", "sticky", "relative"],
+    correct: 0,
+  },
+  {
+    question: "Como aplicar um estilo a vários seletores ao mesmo tempo?",
+    answers: [
+      "Separando por vírgula",
+      "Usando &",
+      "Usando |",
+      "Repetindo a regra",
+    ],
+    correct: 0,
+  },
+  {
+    question: "Qual pseudo-classe representa o estado de foco em um campo?",
+    answers: [":focus", ":hover", ":active", ":checked"],
+    correct: 0,
+  },
 
   {
     question: "Qual tag é usada para criar um link?",
@@ -186,9 +203,14 @@ const questions = [
     answers: ["padding", "margin", "border", "spacing"],
     correct: 0,
   },
+]);
 
-  
-];
+// Percorre as perguntas
+for (i = 0; i < questions.length; i++) {
+  correctItem = questions[i].answers[questions[i].correct]; // Armazena a resposta correta
+  questions[i].answers = shuffle(questions[i].answers); // Embaralha as respostas
+  questions[i].correct = questions[i].answers.indexOf(correctItem); // Atualiza o índice da resposta correta
+}
 
 let currentQuestion = 0;
 let score = 0;
@@ -267,8 +289,14 @@ function showResult() {
     resultEl.innerHTML += `
       <div style="margin-bottom: 15px;">
         <strong>(${i + 1}) ${q.question}</strong><br>
-        Sua resposta: <span style="color: ${isCorrect ? 'green' : 'red'}">${q.answers[userAnswer] || "Não respondida"}</span><br>
-        ${!isCorrect ? `Correta: <span style="color: green">${q.answers[correctAnswer]}</span><br>` : ""}
+        Sua resposta: <span style="color: ${isCorrect ? "green" : "red"}">${
+      q.answers[userAnswer] || "Não respondida"
+    }</span><br>
+        ${
+          !isCorrect
+            ? `Correta: <span style="color: green">${q.answers[correctAnswer]}</span><br>`
+            : ""
+        }
       </div>
     `;
   });
